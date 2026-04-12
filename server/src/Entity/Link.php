@@ -15,15 +15,15 @@ class Link
     #[ORM\Column]
     private ?int $id = null;
 
+    #[ORM\Column(length: 255)]
+    private ?string $name = null;
+
+    #[ORM\Column(length: 3000)]
+    private ?string $url = null;
+
     #[ORM\ManyToOne(inversedBy: 'links')]
     #[ORM\JoinColumn(nullable: false)]
     private ?LinkCollection $collection_id = null;
-
-    #[orm\column(length: 255)]
-    private ?string $name = null;
-
-    #[orm\column(length: 3000)]
-    private ?string $url = null;
 
 
     public function getId(): ?int

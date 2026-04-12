@@ -1,0 +1,37 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}LinkCollection index{% endblock %}
+
+{% block body %}
+    <h1>LinkCollection index</h1>
+
+    <table class="table">
+        <thead>
+            <tr>
+                <th>Id</th>
+                <th>Name</th>
+                <th>Public</th>
+                <th>actions</th>
+            </tr>
+        </thead>
+        <tbody>
+        {% for link_collection in link_collections %}
+            <tr>
+                <td>{{ link_collection.id }}</td>
+                <td>{{ link_collection.name }}</td>
+                <td>{{ link_collection.public ? 'Yes' : 'No' }}</td>
+                <td>
+                    <a href="{{ path('app_link_collection_show', {'id': link_collection.id}) }}">show</a>
+                    <a href="{{ path('app_link_collection_edit', {'id': link_collection.id}) }}">edit</a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="4">no records found</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+
+    <a href="{{ path('app_link_collection_new') }}">Create new</a>
+{% endblock %}

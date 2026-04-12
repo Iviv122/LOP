@@ -1,0 +1,11 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}New LinkCollection{% endblock %}
+
+{% block body %}
+    <h1>Create new LinkCollection</h1>
+
+    {{ include('link_collection/_form.html.twig') }}
+
+    <a href="{{ path('app_link_collection_index') }}">back to list</a>
+{% endblock %}
