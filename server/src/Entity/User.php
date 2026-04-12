@@ -3,6 +3,8 @@
 namespace App\Entity;
 
 use App\Repository\UserRepository;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\PasswordAuthenticatedUserInterface;
 use Symfony\Component\Security\Core\User\UserInterface;
@@ -31,6 +33,17 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
      */
     #[ORM\Column]
     private ?string $password = null;
+
+    /**
+     * @var Collection<int, LinkCollection>
+     */
+    #[ORM\OneToMany(targetEntity: LinkCollection::class, mappedBy: 'user_id')]
+    private Collection $linkCollections;
+
+    public function __construct()
+    {
+        $this->linkCollections = new ArrayCollection();
+    }
 
     public function getId(): ?int
     {
@@ -105,5 +118,35 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         $data["\0".self::class."\0password"] = hash('crc32c', $this->password);
 
         return $data;
+    }
+
+    /**
+     * @return Collection<int, LinkCollection>
+     */
+    public function getLinkCollections(): Collection
+    {
+        return $this->linkCollections;
+    }
+
+    public function addLinkCollection(LinkCollection $linkCollection): static
+    {
+        if (!$this->linkCollections->contains($linkCollection)) {
+            $this->linkCollections->add($linkCollection);
+            $linkCollection->setUserId($this);
+        }
+
+        return $this;
+    }
+
+    public function removeLinkCollection(LinkCollection $linkCollection): static
+    {
+        if ($this->linkCollections->removeElement($linkCollection)) {
+            // set the owning side to null (unless already changed)
+            if ($linkCollection->getUserId() === $this) {
+                $linkCollection->setUserId(null);
+            }
+        }
+
+        return $this;
     }
 }
