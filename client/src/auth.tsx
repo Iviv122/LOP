@@ -21,7 +21,7 @@ interface LoginResponse {
 
 const AuthContext = createContext<AuthState | undefined>(undefined)
 
-const LOGIN_CHECK_URL = 'http://localhost:8000/api/login_check'
+const LOGIN_CHECK_URL = 'http://localhost:8000/api/token_check'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
