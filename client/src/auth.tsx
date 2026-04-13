@@ -20,8 +20,9 @@ interface LoginResponse {
 }
 
 const AuthContext = createContext<AuthState | undefined>(undefined)
-
-const LOGIN_CHECK_URL = 'http://localhost:8000/api/token_check'
+// implement this shit correctly
+const TOKEN_CHECK_URL = 'http://localhost:8000/api/token_check'
+const LOGIN_CHECK_URL = 'http://localhost:8000/api/login_check'
 
 export function AuthProvider({ children }: { children: React.ReactNode }) {
   const [user, setUser] = useState<User | null>(null)
@@ -34,7 +35,7 @@ export function AuthProvider({ children }: { children: React.ReactNode }) {
       const token = localStorage.getItem('token')
       if (token) {
         try {
-          const response = await fetch(LOGIN_CHECK_URL, {
+          const response = await fetch(TOKEN_CHECK_URL, {
             headers: { Authorization: `Bearer ${token}` },
           })
           const data: LoginResponse = await response.json()
