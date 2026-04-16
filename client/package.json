@@ -8,6 +8,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
+    "openapi" : " npx openapi-typescript ../server/schema.yaml -o ./src/types/api.d.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint",
@@ -38,8 +39,9 @@
     "@types/react-dom": "^19.2.0",
     "@vitejs/plugin-react": "^6.0.1",
     "jsdom": "^28.1.0",
+    "openapi-typescript": "^7.13.0",
     "prettier": "^3.8.1",
-    "typescript": "^5.7.2",
+    "typescript": "^5.9.3",
     "vite": "^8.0.0",
     "vitest": "^3.0.5"
   },
