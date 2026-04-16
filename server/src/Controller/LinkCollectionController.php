@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/link_collection')]
+#[Route('api/link_collection')]
 final class LinkCollectionController extends AbstractController
 {
     #[Route(name: 'app_link_collection_index', methods: ['GET'])]

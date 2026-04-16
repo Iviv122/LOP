@@ -11,7 +11,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Attribute\Route;
 
-#[Route('/link')]
+#[Route('api/link')]
 final class LinkController extends AbstractController
 {
     #[Route(name: 'app_link_index', methods: ['GET'])]
