@@ -1,43 +1,51 @@
 import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
-import appCss from '../styles.css?url'
+import { AuthProvider, useAuth } from '#/lib/providers/auth';
+import LoginForm from '#/components/login';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import Query from '#/lib/providers/querry';
 
-interface AuthState {
-  isAuthenticated: boolean
-  user: { id: string; username: string;} | null
-  login: (username: string, password: string) => Promise<void>
-  logout: () => void
+interface AuthContextValue {
+  token: string | null;
+  isAuthenticated: boolean;
+  isLoading: boolean;
+  signIn: (token: string) => Promise<void>;
+  signOut: () => Promise<void>;
 }
 
 interface MyRouterContext {
-  auth: AuthState
+  auth: AuthContextValue
 }
 
 export const Route = createRootRouteWithContext<MyRouterContext>()({
-  head: () => ({
-    meta: [
-      {
-        charSet: 'utf-8',
-      },
-      {
-        name: 'viewport',
-        content: 'width=device-width, initial-scale=1',
-      },
-      {
-        title: 'TanStack Start Starter',
-      },
-    ],
-    links: [
-      {
-        rel: 'stylesheet',
-        href: appCss,
-      },
-    ],
-  }),
   component: RootComponent,
 })
 
+const queryClient = new QueryClient();
+
 function RootComponent() {
   return (
-    < Outlet />
+
+    <AuthProvider>
+      <QueryClientProvider client={queryClient}>
+        <Query>
+          <AuthGate />
+        </Query>
+
+      </QueryClientProvider>
+    </AuthProvider>
+  )
+}
+function AuthGate() {
+  const { isAuthenticated } = useAuth()
+  return (
+    <>
+      {
+        isAuthenticated
+          ?
+          < Outlet />
+          :
+          <LoginForm />
+      }
+    </>
   )
 }

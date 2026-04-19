@@ -8,7 +8,7 @@
   "scripts": {
     "dev": "vite dev --port 3000",
     "build": "vite build",
-    "openapi" : " npx openapi-typescript ../server/schema.yaml -o ./src/types/api.d.ts",
+    "openapi": " npx openapi-typescript ../server/schema.yaml -o ./src/types/api.d.ts",
     "preview": "vite preview",
     "test": "vitest run",
     "lint": "eslint",
@@ -18,14 +18,18 @@
   "dependencies": {
     "@tailwindcss/vite": "^4.1.18",
     "@tanstack/react-devtools": "latest",
+    "@tanstack/react-query": "^5.99.2",
     "@tanstack/react-router": "latest",
     "@tanstack/react-router-devtools": "latest",
     "@tanstack/react-router-ssr-query": "latest",
     "@tanstack/react-start": "latest",
     "@tanstack/router-plugin": "^1.132.0",
     "lucide-react": "^0.545.0",
+    "openapi-fetch": "^0.17.0",
+    "openapi-react-query": "^0.5.4",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
+    "react-hook-form": "^7.72.1",
     "tailwindcss": "^4.1.18"
   },
   "devDependencies": {
