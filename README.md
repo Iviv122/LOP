@@ -17,3 +17,8 @@ generate OpenApi scheme
 ```
 php bin/console api:openapi:export -y
 ```
+
+import OpenApi scheme
+```
+npm run openapi
+```
