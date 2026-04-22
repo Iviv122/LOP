@@ -1,51 +1,31 @@
-import { createRootRouteWithContext, Outlet } from '@tanstack/react-router'
-import { AuthProvider, useAuth } from '#/lib/providers/auth';
-import LoginForm from '#/components/login';
-import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import Query from '#/lib/providers/querry';
+import { createRootRoute, Link, Outlet } from '@tanstack/react-router'
+import { TanStackRouterDevtools } from '@tanstack/react-router-devtools'
+import LoginForm from '../components/auth/LoginForm/LoginForm';
+import { useAuth } from '../lib/providers/auth';
 
-interface AuthContextValue {
-  token: string | null;
-  isAuthenticated: boolean;
-  isLoading: boolean;
-  signIn: (token: string) => Promise<void>;
-  signOut: () => Promise<void>;
-}
 
-interface MyRouterContext {
-  auth: AuthContextValue
-}
+function RootLayout() {
 
-export const Route = createRootRouteWithContext<MyRouterContext>()({
-  component: RootComponent,
-})
-
-const queryClient = new QueryClient();
-
-function RootComponent() {
+  const auth = useAuth();
   return (
 
-    <AuthProvider>
-      <QueryClientProvider client={queryClient}>
-        <Query>
-          <AuthGate />
-        </Query>
+    auth.isAuthenticated ?
+      <>
+        <div className="p-2 flex gap-2">
+          <Link to="/" className="[&.active]:font-bold">
+            Home
+          </Link>{' '}
+          <Link to='/about' className="[&.active]:font-bold">
+            About
+          </Link>
+        </div>
+        <hr />
+        <Outlet />
+        <TanStackRouterDevtools />
+      </>
+      :
+      <LoginForm/>
+  )
+}
 
-      </QueryClientProvider>
-    </AuthProvider>
-  )
-}
-function AuthGate() {
-  const { isAuthenticated } = useAuth()
-  return (
-    <>
-      {
-        isAuthenticated
-          ?
-          < Outlet />
-          :
-          <LoginForm />
-      }
-    </>
-  )
-}
+export const Route = createRootRoute({ component: RootLayout })

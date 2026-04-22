@@ -1,13 +1,12 @@
-import { apiBaseUrl } from '#/consts/apiBaseUrl';
-import { getAuthToken, setAuthToken } from '@/lib/auth/token';
-import type { paths } from '@/types/api';
 import createFetchClient from 'openapi-fetch';
 import createClient from 'openapi-react-query';
+import { apiBaseURL } from '../../constants/apiBaseUrl';
+import type { paths } from '../../types/api';
 
 const fetchClient = createFetchClient<paths>({
-    baseUrl: apiBaseUrl,
+    baseUrl: apiBaseURL,
 });
-
+/*
 fetchClient.use({
     async onRequest({ request }) {
         const token = await getAuthToken();
@@ -27,5 +26,5 @@ fetchClient.use({
         await setAuthToken(null);
     },
 });
-
-export const apiClient = createClient(fetchClient);
+*/
+export const apiClient = createClient<paths>(fetchClient);

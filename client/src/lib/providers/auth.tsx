@@ -1,64 +1,53 @@
-import React, { createContext, useCallback, useContext, useEffect, useMemo, useState } from 'react';
+import React, { createContext, useContext, useEffect, useState } from "react";
 
-import { getAuthToken, setAuthToken, subscribeToTokenChanges } from '@/lib/auth/token';
+type AuthContextType = {
+  isAuthenticated: boolean;
+  login: (token: string) => void;
+  logout: () => void;
+  token: string | null;
+};
 
-interface AuthContextValue {
-    token: string | null;
-    isAuthenticated: boolean;
-    isLoading: boolean;
-    signIn: (token: string) => Promise<void>;
-    signOut: () => Promise<void>;
-}
+const AuthContext = createContext<AuthContextType | undefined>(undefined);
 
-const AuthContext = createContext<AuthContextValue | undefined>(undefined);
+export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children }) => {
+  const [token, setToken] = useState<string | null>(null);
 
-export function AuthProvider({ children }: { children: React.ReactNode }) {
-    const [token, setToken] = useState<string | null>(null);
-    const [isLoading, setIsLoading] = useState(true);
+  useEffect(() => {
+    const storedToken = localStorage.getItem("auth_token");
 
-    useEffect(() => {
-        (async () => {
-            console.log("Loaded token")
-            const storedToken = await getAuthToken();
-            setToken(storedToken);
-            setIsLoading(false);
-        })();
-    }, []);
-
-    useEffect(() => {
-        const unsubscribe = subscribeToTokenChanges(setToken);
-        return unsubscribe;
-    }, []);
-
-    const signIn = useCallback(async (nextToken: string) => {
-        console.log("Sign In")
-        await setAuthToken(nextToken);
-    }, []);
-
-    const signOut = useCallback(async () => {
-        console.log("Sign Out")
-        await setAuthToken(null);
-    }, []);
-
-    const value = useMemo<AuthContextValue>(
-        () => ({
-            token,
-            isAuthenticated: Boolean(token),
-            isLoading,
-            signIn,
-            signOut,
-        }),
-        [isLoading, signIn, signOut, token]
-    );
-
-    return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
-}
-
-export function useAuth(): AuthContextValue {
-    const context = useContext(AuthContext);
-    if (!context) {
-        throw new Error('useAuth must be used within an AuthProvider');
+    if (storedToken) {
+      setToken(storedToken);
     }
+  }, []);
 
-    return context;
-}
+  const login = (token: string) => {
+    setToken(token);
+
+    localStorage.setItem("auth_token", token);
+  };
+
+  const logout = () => {
+    setToken(null);
+
+    localStorage.removeItem("auth_user");
+    localStorage.removeItem("auth_token");
+  };
+
+
+  const value: AuthContextType = {
+    token,
+    isAuthenticated: !!token,
+    login,
+    logout,
+  };
+
+  return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
+};
+
+export const useAuth = (): AuthContextType => {
+  const context = useContext(AuthContext);
+  if (!context) {
+    throw new Error("useAuth must be used within AuthProvider");
+  }
+  return context;
+};
