@@ -1,3 +1,3 @@
 import { atomWithStorage } from "jotai/utils";
 
-export const token = atomWithStorage('token',"test");
+export const token = atomWithStorage<string | null>("token",null);
