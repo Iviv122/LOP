@@ -1,5 +1,6 @@
+import createFetchClient from "openapi-fetch";
+import createClient from "openapi-react-query";
 import type { Middleware } from "openapi-fetch";
-import createClient from "openapi-fetch/dist/index.cjs";
 import type { paths } from "../types/schema";
 import { store } from "./store";
 import { RemoveAuthToken, tokenAtom } from "../atoms/token";
@@ -7,8 +8,6 @@ import { baseUrl } from "./baseUrl";
 
 
 const myMiddleware: Middleware = {
-
-
     async onRequest({ request, options }) {
         const token = store.get(tokenAtom);
         if (token) {
@@ -27,8 +26,9 @@ const myMiddleware: Middleware = {
         return response;
     },
 };
+const fetchClient = createFetchClient<paths>({
+    baseUrl: baseUrl
+})
 
-const client = createClient<paths>({ baseUrl: baseUrl });
-
-// register middleware
-client.use(myMiddleware);
+fetchClient.use(myMiddleware);
+export const apiClient = createClient(fetchClient)
