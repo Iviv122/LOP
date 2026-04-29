@@ -1,10 +1,10 @@
 import createFetchClient from "openapi-fetch";
 import createClient from "openapi-react-query";
 import type { Middleware } from "openapi-fetch";
-import { GetAuthToken, RemoveAuthToken} from "../../atoms/token";
+import { GetAuthToken} from "../../atoms/token";
 import { baseUrl } from "../utils/baseUrl";
-import { router } from "../../main";
 import type { paths } from "../../types/schema";
+import BadAuth from "../auth/utils/logout";
 
 
 const myMiddleware: Middleware = {
@@ -19,13 +19,7 @@ const myMiddleware: Middleware = {
     async onResponse({ request, response, options }) {
         
         if(response.status === 401){
-            RemoveAuthToken();
-            throw router.navigate({
-                to: '/login',
-                search: {
-                    redirect: url.pathname,
-                },
-            })
+            BadAuth();
         }
 
         return response;
