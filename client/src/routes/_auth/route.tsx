@@ -1,15 +1,19 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
-import { tokenAtom } from '../../atoms/token'
+import { GetAuthToken, RemoveAuthToken } from '../../atoms/token'
 import Navigation from '../../components/navigation';
-import { store } from '../../lib/store';
 
 
 export const Route = createFileRoute('/_auth')({
     beforeLoad: () => {
-        const token = store.get(tokenAtom);
+        const token = GetAuthToken();
         if (!token) {
+            RemoveAuthToken();
+            const url = new URL(location.href);
             throw redirect({
                 to: '/login',
+                search: {
+                    redirect: url.pathname,
+                },
             })
         }
     },

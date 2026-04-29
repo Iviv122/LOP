@@ -1,14 +1,10 @@
+/*
 import { atomWithStorage } from "jotai/utils";
-import { store } from "../lib/utils/store";
+import { store } from "../lib/store";
+export const tokenAtom = atomWithStorage<string | null>("token",null);
 
-const tokenAtomStorageName = "token";
-
-const tokenAtom = atomWithStorage<string | null>(tokenAtomStorageName,null);
-
-const stored = localStorage.getItem(tokenAtomStorageName);
-if(stored){
-    store.set(tokenAtom, JSON.parse(stored));
-}
+const stored = localStorage.getItem("token");
+store.set(tokenAtom, stored);
 
 export function RemoveAuthToken() : void{
     store.set(tokenAtom,null);
@@ -23,3 +19,4 @@ export function GetAuthToken() : string | null{
     }
     return token ?? null;
 }
+*/
