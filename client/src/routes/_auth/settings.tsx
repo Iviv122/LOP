@@ -17,14 +17,12 @@ function RouteComponent() {
     mutate({})
   }, [])
 
+  if (isPending) return <p>Loading...</p>
+
   return (
     <>
       {
-        isPending
-          ?
-          <p>Loading...</p>
-          :
-          data?.roles?.map((e, i) => <p key={i}>{e}</p>)
+        data?.roles?.map((e, i) => <p key={i}>{e}</p>)
       }
     </>
   )

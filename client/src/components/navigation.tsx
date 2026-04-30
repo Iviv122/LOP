@@ -2,7 +2,7 @@ import { Link } from '@tanstack/react-router'
 import { RemoveAuthToken } from '../atoms/token'
 import { useEffect } from 'react';
 import { apiClient } from '../lib/api/client';
-import { IsAdmin, RoleLabel, SetAdmin } from '../atoms/isadmin';
+import { IsAdmin, SetAdmin } from '../atoms/isadmin';
 
 export default function Navigation() {
 
@@ -31,11 +31,11 @@ export default function Navigation() {
             <Link to="/collection">Collection</Link>
             <Link to="/settings">Settings</Link>
             {
-                isPending
+                IsAdmin()
                 ?
-                <p>loading...</p>
+                <><Link to="/users">Users</Link></>
                 :
-                <p>{RoleLabel()}</p>
+                <></>
             }
             <Link to='/login' onClick={logOut}>Log out</Link>
         </nav>

@@ -13,7 +13,7 @@ export function SetAdmin(newValue : boolean) : void{
 }
 export function IsAdmin() : boolean{
     const token = store.get(tokenAtom);
-    return token ;
+    return token;
 }
 export function RoleLabel() : string{
     if(IsAdmin()){

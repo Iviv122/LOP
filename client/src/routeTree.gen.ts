@@ -12,10 +12,9 @@ import { Route as rootRouteImport } from './routes/__root'
 import { Route as LoginRouteImport } from './routes/login'
 import { Route as AuthRouteRouteImport } from './routes/_auth/route'
 import { Route as AuthIndexRouteImport } from './routes/_auth/index'
+import { Route as AuthUsersRouteImport } from './routes/_auth/users'
 import { Route as AuthSettingsRouteImport } from './routes/_auth/settings'
 import { Route as AuthCollectionRouteImport } from './routes/_auth/collection'
-import { Route as AuthAdminRouteRouteImport } from './routes/_auth/_admin/route'
-import { Route as AuthAdminUsersRouteImport } from './routes/_auth/_admin/users'
 
 const LoginRoute = LoginRouteImport.update({
   id: '/login',
@@ -31,6 +30,11 @@ const AuthIndexRoute = AuthIndexRouteImport.update({
   path: '/',
   getParentRoute: () => AuthRouteRoute,
 } as any)
+const AuthUsersRoute = AuthUsersRouteImport.update({
+  id: '/users',
+  path: '/users',
+  getParentRoute: () => AuthRouteRoute,
+} as any)
 const AuthSettingsRoute = AuthSettingsRouteImport.update({
   id: '/settings',
   path: '/settings',
@@ -41,54 +45,43 @@ const AuthCollectionRoute = AuthCollectionRouteImport.update({
   path: '/collection',
   getParentRoute: () => AuthRouteRoute,
 } as any)
-const AuthAdminRouteRoute = AuthAdminRouteRouteImport.update({
-  id: '/_admin',
-  getParentRoute: () => AuthRouteRoute,
-} as any)
-const AuthAdminUsersRoute = AuthAdminUsersRouteImport.update({
-  id: '/users',
-  path: '/users',
-  getParentRoute: () => AuthAdminRouteRoute,
-} as any)
 
 export interface FileRoutesByFullPath {
   '/': typeof AuthIndexRoute
   '/login': typeof LoginRoute
   '/collection': typeof AuthCollectionRoute
   '/settings': typeof AuthSettingsRoute
-  '/users': typeof AuthAdminUsersRoute
+  '/users': typeof AuthUsersRoute
 }
 export interface FileRoutesByTo {
   '/login': typeof LoginRoute
-  '/': typeof AuthIndexRoute
   '/collection': typeof AuthCollectionRoute
   '/settings': typeof AuthSettingsRoute
-  '/users': typeof AuthAdminUsersRoute
+  '/users': typeof AuthUsersRoute
+  '/': typeof AuthIndexRoute
 }
 export interface FileRoutesById {
   __root__: typeof rootRouteImport
   '/_auth': typeof AuthRouteRouteWithChildren
   '/login': typeof LoginRoute
-  '/_auth/_admin': typeof AuthAdminRouteRouteWithChildren
   '/_auth/collection': typeof AuthCollectionRoute
   '/_auth/settings': typeof AuthSettingsRoute
+  '/_auth/users': typeof AuthUsersRoute
   '/_auth/': typeof AuthIndexRoute
-  '/_auth/_admin/users': typeof AuthAdminUsersRoute
 }
 export interface FileRouteTypes {
   fileRoutesByFullPath: FileRoutesByFullPath
   fullPaths: '/' | '/login' | '/collection' | '/settings' | '/users'
   fileRoutesByTo: FileRoutesByTo
-  to: '/login' | '/' | '/collection' | '/settings' | '/users'
+  to: '/login' | '/collection' | '/settings' | '/users' | '/'
   id:
     | '__root__'
     | '/_auth'
     | '/login'
-    | '/_auth/_admin'
     | '/_auth/collection'
     | '/_auth/settings'
+    | '/_auth/users'
     | '/_auth/'
-    | '/_auth/_admin/users'
   fileRoutesById: FileRoutesById
 }
 export interface RootRouteChildren {
@@ -119,6 +112,13 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthIndexRouteImport
       parentRoute: typeof AuthRouteRoute
     }
+    '/_auth/users': {
+      id: '/_auth/users'
+      path: '/users'
+      fullPath: '/users'
+      preLoaderRoute: typeof AuthUsersRouteImport
+      parentRoute: typeof AuthRouteRoute
+    }
     '/_auth/settings': {
       id: '/_auth/settings'
       path: '/settings'
@@ -133,46 +133,20 @@ declare module '@tanstack/react-router' {
       preLoaderRoute: typeof AuthCollectionRouteImport
       parentRoute: typeof AuthRouteRoute
     }
-    '/_auth/_admin': {
-      id: '/_auth/_admin'
-      path: ''
-      fullPath: '/'
-      preLoaderRoute: typeof AuthAdminRouteRouteImport
-      parentRoute: typeof AuthRouteRoute
-    }
-    '/_auth/_admin/users': {
-      id: '/_auth/_admin/users'
-      path: '/users'
-      fullPath: '/users'
-      preLoaderRoute: typeof AuthAdminUsersRouteImport
-      parentRoute: typeof AuthAdminRouteRoute
-    }
   }
 }
 
-interface AuthAdminRouteRouteChildren {
-  AuthAdminUsersRoute: typeof AuthAdminUsersRoute
-}
-
-const AuthAdminRouteRouteChildren: AuthAdminRouteRouteChildren = {
-  AuthAdminUsersRoute: AuthAdminUsersRoute,
-}
-
-const AuthAdminRouteRouteWithChildren = AuthAdminRouteRoute._addFileChildren(
-  AuthAdminRouteRouteChildren,
-)
-
 interface AuthRouteRouteChildren {
-  AuthAdminRouteRoute: typeof AuthAdminRouteRouteWithChildren
   AuthCollectionRoute: typeof AuthCollectionRoute
   AuthSettingsRoute: typeof AuthSettingsRoute
+  AuthUsersRoute: typeof AuthUsersRoute
   AuthIndexRoute: typeof AuthIndexRoute
 }
 
 const AuthRouteRouteChildren: AuthRouteRouteChildren = {
-  AuthAdminRouteRoute: AuthAdminRouteRouteWithChildren,
   AuthCollectionRoute: AuthCollectionRoute,
   AuthSettingsRoute: AuthSettingsRoute,
+  AuthUsersRoute: AuthUsersRoute,
   AuthIndexRoute: AuthIndexRoute,
 }
 

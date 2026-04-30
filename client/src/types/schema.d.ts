@@ -128,6 +128,58 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/admin/users": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves the collection of User resources.
+         * @description Retrieves the collection of User resources.
+         */
+        get: operations["api_adminusers_get_collection"];
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/admin/users/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Retrieves a User resource.
+         * @description Retrieves a User resource.
+         */
+        get: operations["api_adminusers_id_get"];
+        /**
+         * Replaces the User resource.
+         * @description Replaces the User resource.
+         */
+        put: operations["api_adminusers_id_put"];
+        /**
+         * Creates a User resource.
+         * @description Creates a User resource.
+         */
+        post: operations["api_adminusers_id_post"];
+        /**
+         * Removes the User resource.
+         * @description Removes the User resource.
+         */
+        delete: operations["api_adminusers_id_delete"];
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/_error/{code}": {
         parameters: {
             query?: never;
@@ -286,6 +338,22 @@ export interface paths {
         get: operations["get_app_user"];
         put?: never;
         post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/user/new_password": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        post: operations["post_app_update_password"];
         delete?: never;
         options?: never;
         head?: never;
@@ -469,25 +537,49 @@ export interface components {
             readonly id?: number;
             name?: string;
             public?: boolean;
-            user_id?: components["schemas"]["User"];
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            user_id?: string;
             links?: string[];
-            userId?: components["schemas"]["User"] | null;
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            userId?: string | null;
         };
         "LinkCollection.jsonMergePatch": {
             readonly id?: number;
             name?: string;
             public?: boolean;
-            user_id?: components["schemas"]["User"];
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            user_id?: string;
             links?: string[];
-            userId?: components["schemas"]["User"] | null;
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            userId?: string | null;
         };
         "LinkCollection.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
             readonly id?: number;
             name?: string;
             public?: boolean;
-            user_id?: components["schemas"]["User.jsonld"];
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            user_id?: string;
             links?: string[];
-            userId?: components["schemas"]["User.jsonld"] | null;
+            /**
+             * Format: iri-reference
+             * @example https://example.com/
+             */
+            userId?: string | null;
         };
         User: {
             readonly id?: number;
@@ -496,18 +588,18 @@ export interface components {
             roles?: string[];
             /** @description The hashed password */
             password?: string;
-            linkCollections?: components["schemas"]["LinkCollection"][];
+            linkCollections?: string[];
             /** @description A visual identifier that represents this user. */
             readonly userIdentifier?: string;
         };
-        "User.jsonld": {
+        "User.jsonld": components["schemas"]["HydraItemBaseSchema"] & {
             readonly id?: number;
             username?: string;
             /** @description The user roles */
             roles?: string[];
             /** @description The hashed password */
             password?: string;
-            linkCollections?: components["schemas"]["LinkCollection.jsonld"][];
+            linkCollections?: string[];
             /** @description A visual identifier that represents this user. */
             readonly userIdentifier?: string;
         };
@@ -944,6 +1036,208 @@ export interface operations {
                     "application/json": {
                         readonly token: string;
                     };
+                };
+            };
+        };
+    };
+    api_adminusers_get_collection: {
+        parameters: {
+            query?: {
+                /** @description The collection page number */
+                page?: number;
+            };
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User collection */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["HydraCollectionBaseSchema"] & {
+                        member: components["schemas"]["User.jsonld"][];
+                    };
+                };
+            };
+        };
+    };
+    api_adminusers_id_get: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User resource */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["User.jsonld"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+        };
+    };
+    api_adminusers_id_put: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The updated User resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["User"];
+            };
+        };
+        responses: {
+            /** @description User resource updated */
+            200: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["User.jsonld"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_adminusers_id_post: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        /** @description The new User resource */
+        requestBody: {
+            content: {
+                "application/ld+json": components["schemas"]["User"];
+            };
+        };
+        responses: {
+            /** @description User resource created */
+            201: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["User.jsonld"];
+                };
+            };
+            /** @description Invalid input */
+            400: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
+                };
+            };
+            /** @description An error occurred */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["ConstraintViolation.jsonld"];
+                    "application/problem+json": components["schemas"]["ConstraintViolation"];
+                    "application/json": components["schemas"]["ConstraintViolation"];
+                };
+            };
+        };
+    };
+    api_adminusers_id_delete: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path: {
+                /** @description User identifier */
+                id: string;
+            };
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            /** @description User resource deleted */
+            204: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
+            };
+            /** @description Not found */
+            404: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/ld+json": components["schemas"]["Error.jsonld"];
+                    "application/problem+json": components["schemas"]["Error"];
+                    "application/json": components["schemas"]["Error"];
                 };
             };
         };
@@ -1394,6 +1688,23 @@ export interface operations {
                         message?: string;
                     };
                 };
+            };
+        };
+    };
+    post_app_update_password: {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        requestBody?: never;
+        responses: {
+            default: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content?: never;
             };
         };
     };
