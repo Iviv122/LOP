@@ -34,7 +34,7 @@ class CreateAdminCommand extends Command
         $io = new SymfonyStyle($input, $output);
 
         $username = 'admin';
-        $plainPassword = 'change_me';
+        $plainPassword = 'admin';
 
         $existing = $this->em->getRepository(User::class)
             ->findOneBy(['username' => $username]);

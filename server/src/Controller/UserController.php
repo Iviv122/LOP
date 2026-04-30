@@ -74,4 +74,15 @@ final class UserController extends AbstractController
             'roles' => $user->getRoles()
         ]);
     }
+    #[Route('/new_password', name: 'app_update_password', methods: ['POST'])]
+    public function updatePassword(): Response
+    {
+        $user = $this->getUser();
+
+        return $this->json([
+            'id' => $user->getId(),
+            'username' => $user->getUserIdentifier(),
+            'roles' => $user->getRoles()
+        ]);
+    }
 }

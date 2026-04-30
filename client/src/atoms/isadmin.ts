@@ -15,3 +15,10 @@ export function IsAdmin() : boolean{
     const token = store.get(tokenAtom);
     return token ;
 }
+export function RoleLabel() : string{
+    if(IsAdmin()){
+        return "superuser"
+    }else{
+        return "user"
+    }
+}
