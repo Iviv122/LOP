@@ -716,8 +716,8 @@ paths:
               schema:
                 properties:
                   id: { type: integer, example: 1 }
-                  username: { type: string, example: john.doe@example.com }
-                  roles: { type: array, items: { type: string }, example: [ROLE_USER] }
+                  username: { type: string, example: admin }
+                  roles: { type: array, items: { type: string, enum: [ROLE_ADMIN, ROLE_USER] }, example: [ROLE_USER] }
                 type: object
         '401':
           description: 'Unauthorized - User not authenticated'
@@ -727,6 +727,9 @@ paths:
                 properties:
                   message: { type: string, example: 'Authentication required' }
                 type: object
+      security:
+        -
+          Bearer: []
 components:
   schemas:
     ConstraintViolation:

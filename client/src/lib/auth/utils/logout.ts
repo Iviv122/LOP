@@ -1,8 +1,11 @@
+import { RemoveAdmin } from "../../../atoms/isadmin";
 import { RemoveAuthToken } from "../../../atoms/token";
 import { router } from "../../../main";
 
 export default function BadAuth() {
     RemoveAuthToken();
+    RemoveAdmin();
+
     const url = new URL(location.href);
     throw router.navigate({
         to: '/login',

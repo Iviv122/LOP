@@ -1372,14 +1372,14 @@ export interface operations {
                     "application/json": {
                         /** @example 1 */
                         id?: number;
-                        /** @example john.doe@example.com */
+                        /** @example admin */
                         username?: string;
                         /**
                          * @example [
                          *       "ROLE_USER"
                          *     ]
                          */
-                        roles?: string[];
+                        roles?: ("ROLE_ADMIN" | "ROLE_USER")[];
                     };
                 };
             };

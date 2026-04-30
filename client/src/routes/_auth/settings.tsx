@@ -8,18 +8,24 @@ export const Route = createFileRoute('/_auth/settings')({
 
 function RouteComponent() {
 
-  const {mutate, data, error, isLoading} = apiClient.useMutation(
+  const { mutate, data, error, isPending } = apiClient.useMutation(
     "get",
     "/api/user/"
   )
 
-  useEffect(() =>{
-    mutate()
-  },[])
+  useEffect(() => {
+    mutate({})
+  }, [])
 
   return (
     <>
-      {data?.roles?.map((e,i) => <p key={i}>{e}</p>)}
+      {
+        isPending
+          ?
+          <p>Loading...</p>
+          :
+          data?.roles?.map((e, i) => <p key={i}>{e}</p>)
+      }
     </>
   )
 }
