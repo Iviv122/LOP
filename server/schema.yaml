@@ -922,6 +922,62 @@ paths:
       responses:
         default:
           description: ''
+  /api/user/:
+    get:
+      tags:
+        - User
+      summary: 'Get current user information'
+      description: "Returns the authenticated user's details including ID, username, and roles"
+      operationId: get_app_user
+      responses:
+        '200':
+          description: 'Successfully retrieved user information'
+          content:
+            application/json:
+              schema:
+                properties:
+                  id: { type: integer, example: 1 }
+                  username: { type: string, example: admin }
+                  roles: { type: array, items: { type: string, enum: [ROLE_ADMIN, ROLE_USER] }, example: [ROLE_USER] }
+                type: object
+        '401':
+          description: 'Unauthorized - User not authenticated'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string, example: 'Authentication required' }
+                type: object
+      security:
+        -
+          Bearer: []
+  /api/user/new_password:
+    post:
+      tags:
+        - User
+        - User
+      operationId: post_app_update_password
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              required:
+                - password
+              properties:
+                password:
+                  type: string
+                  example: newStrongPassword
+              type: object
+      responses:
+        '200':
+          description: 'change password for promting user'
+          content:
+            application/json:
+              schema:
+                properties:
+                  message: { type: string }
+                type: object
 components:
   schemas:
     ConstraintViolation:

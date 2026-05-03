@@ -1698,13 +1698,25 @@ export interface operations {
             path?: never;
             cookie?: never;
         };
-        requestBody?: never;
+        requestBody: {
+            content: {
+                "application/json": {
+                    /** @example newStrongPassword */
+                    password: string;
+                };
+            };
+        };
         responses: {
-            default: {
+            /** @description change password for promting user */
+            200: {
                 headers: {
                     [name: string]: unknown;
                 };
-                content?: never;
+                content: {
+                    "application/json": {
+                        message?: string;
+                    };
+                };
             };
         };
     };

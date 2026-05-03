@@ -89,36 +89,36 @@ final class UserController extends AbstractController
     }
 
     #[Route('/new_password', name: 'app_update_password', methods: ['POST'])]
-    #[OA\Post(
-        path: "/new_password",
-        summary: "Update user password",
-        requestBody: new OA\RequestBody(
-            required: true,
-            content: new OA\JsonContent(
-                required: ["password"],
-                properties: [
-                    new OA\Property(property: "password", type: "string", example: "newStrongPassword123")
-                ]
-            )
-        ),
-        responses: [
-            new OA\Response(
-                response: 200,
-                description: "Password updated successfully",
-                content: new OA\JsonContent(
-                    properties: [
-                        new OA\Property(property: "id", type: "integer"),
-                        new OA\Property(property: "username", type: "string"),
-                        new OA\Property(property: "roles", type: "array", items: new OA\Items(type: "string"))
-                    ]
+    #[OA\Tag(name: "User")]
+    #[OA\Response(
+        response: 200,
+        description: "change password for promting user",
+        content: new OA\JsonContent(
+            properties: [
+                new OA\Property(
+                    property: "message",
+                    type: "string",
                 )
-            )
-        ]
+            ]
+        )
+    )]
+    #[OA\RequestBody(
+        required: true,
+        content: new OA\JsonContent(
+            required: ["password"],
+            properties: [
+                new OA\Property(
+                    property: "password",
+                    type: "string",
+                    example: "newStrongPassword"
+                )
+            ]
+        )
     )]
     public function updatePassword(Request $request): Response
     {
         $data = $request->getPayload();
-        if(!$data->has("password")){
+        if (!$data->has("password")) {
             return $this->json(['error' => 'Password is required'], 400);
         }
         $plainPassword = $data->get("password");
@@ -134,7 +134,11 @@ final class UserController extends AbstractController
         $this->em->flush();
 
         return $this->json([
-            "status"=> "success",
+            "status" => "success",
         ]);
     }
+}
+final class PasswordDto
+{
+    public string $password;
 }
