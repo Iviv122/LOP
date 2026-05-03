@@ -164,7 +164,3 @@ final class UserController extends AbstractController
         ]);
     }
 }
-final class PasswordDto
-{
-    public string $password;
-}
