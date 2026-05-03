@@ -964,10 +964,14 @@ paths:
             schema:
               required:
                 - password
+                - current_password
               properties:
                 password:
                   type: string
                   example: newStrongPassword
+                current_password:
+                  type: string
+                  example: oldpassword
               type: object
       responses:
         '200':
@@ -977,6 +981,14 @@ paths:
               schema:
                 properties:
                   message: { type: string }
+                type: object
+        '422':
+          description: 'incorrect old password'
+          content:
+            application/json:
+              schema:
+                properties:
+                  error: { type: string, example: 'incorrect old password' }
                 type: object
 components:
   schemas:
@@ -1080,7 +1092,7 @@ components:
           readOnly: true
           nullable: true
         status:
-          type: number
+          type: integer
           default: 400
           nullable: true
         instance:
@@ -1111,7 +1123,7 @@ components:
               readOnly: true
               nullable: true
             status:
-              type: number
+              type: integer
               default: 400
               nullable: true
             instance:

@@ -1703,6 +1703,8 @@ export interface operations {
                 "application/json": {
                     /** @example newStrongPassword */
                     password: string;
+                    /** @example oldpassword */
+                    current_password: string;
                 };
             };
         };
@@ -1715,6 +1717,18 @@ export interface operations {
                 content: {
                     "application/json": {
                         message?: string;
+                    };
+                };
+            };
+            /** @description incorrect old password */
+            422: {
+                headers: {
+                    [name: string]: unknown;
+                };
+                content: {
+                    "application/json": {
+                        /** @example incorrect old password */
+                        error?: string;
                     };
                 };
             };

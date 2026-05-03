@@ -105,7 +105,7 @@ final class UserController extends AbstractController
     #[OA\RequestBody(
         required: true,
         content: new OA\JsonContent(
-            required: ["password"],
+            required: ["password","current_password"],
             properties: [
                 new OA\Property(
                     property: "password",
@@ -149,7 +149,7 @@ final class UserController extends AbstractController
         $user = $this->getUser();
 
         if (!$this->passwordHasher->isPasswordValid($user, $oldPlainPassword)) {
-            return $this->json(['error' => 'Incorrect password'], 422);
+            return $this->json(['error' => 'Incorrect current password'], 422);
         }
 
         $hashedPassword = $this->passwordHasher->hashPassword($user, $plainPassword);
