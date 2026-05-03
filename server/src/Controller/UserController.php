@@ -126,8 +126,8 @@ final class UserController extends AbstractController
         content: new OA\JsonContent(
             properties: [
                 new OA\Property(
-                    property:"error",
-                    type:"string",
+                    property: "error",
+                    type: "string",
                     example: "incorrect old password"
                 )
             ]
@@ -163,8 +163,4 @@ final class UserController extends AbstractController
             "status" => "success",
         ]);
     }
-}
-final class PasswordDto
-{
-    public string $password;
 }
