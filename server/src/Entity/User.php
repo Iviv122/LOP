@@ -2,6 +2,12 @@
 
 namespace App\Entity;
 
+use ApiPlatform\Metadata\ApiResource;
+use ApiPlatform\Metadata\Delete;
+use ApiPlatform\Metadata\Get;
+use ApiPlatform\Metadata\GetCollection;
+use ApiPlatform\Metadata\Post;
+use ApiPlatform\Metadata\Put;
 use App\Repository\UserRepository;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
@@ -12,6 +18,16 @@ use Symfony\Component\Security\Core\User\UserInterface;
 #[ORM\Entity(repositoryClass: UserRepository::class)]
 #[ORM\Table(name: '`user`')]
 #[ORM\UniqueConstraint(name: 'UNIQ_IDENTIFIER_USERNAME', fields: ['username'])]
+//
+#[ApiResource(
+    operations: [
+        new Get(uriTemplate: '/admin/users/{id}'),
+        new Put(uriTemplate: '/admin/users/{id}'),
+        new Delete(uriTemplate: '/admin/users/{id}'),
+        new GetCollection(uriTemplate: '/admin/users'),
+        new Post(uriTemplate: '/admin/users/{id}'),
+    ]
+)]
 class User implements UserInterface, PasswordAuthenticatedUserInterface
 {
     #[ORM\Id]
@@ -102,9 +118,9 @@ class User implements UserInterface, PasswordAuthenticatedUserInterface
         return $this->password;
     }
 
-    public function setPassword(string $password): static
+    public function setPassword(string $hashedPassword): static
     {
-        $this->password = $password;
+        $this->password = $hashedPassword;
 
         return $this;
     }

@@ -462,6 +462,227 @@ paths:
                 properties:
                   token: { type: string, readOnly: true, nullable: false }
                 type: object
+  /api/admin/users:
+    get:
+      tags:
+        - User
+      summary: 'Retrieves the collection of User resources.'
+      description: 'Retrieves the collection of User resources.'
+      operationId: api_adminusers_get_collection
+      parameters:
+        -
+          name: page
+          in: query
+          description: 'The collection page number'
+          required: false
+          deprecated: false
+          style: form
+          explode: true
+          schema:
+            type: integer
+            default: 1
+      responses:
+        '200':
+          description: 'User collection'
+          content:
+            application/ld+json:
+              schema:
+                description: 'User.jsonld collection.'
+                type: object
+                allOf:
+                  - { $ref: '#/components/schemas/HydraCollectionBaseSchema' }
+                  - { required: [member], properties: { member: { type: array, items: { $ref: '#/components/schemas/User.jsonld' } } }, type: object }
+  '/api/admin/users/{id}':
+    get:
+      tags:
+        - User
+      summary: 'Retrieves a User resource.'
+      description: 'Retrieves a User resource.'
+      operationId: api_adminusers_id_get
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User identifier'
+          required: true
+          deprecated: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '200':
+          description: 'User resource'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    put:
+      tags:
+        - User
+      summary: 'Replaces the User resource.'
+      description: 'Replaces the User resource.'
+      operationId: api_adminusers_id_put
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User identifier'
+          required: true
+          deprecated: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: 'The updated User resource'
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '200':
+          description: 'User resource updated'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+    post:
+      tags:
+        - User
+      summary: 'Creates a User resource.'
+      description: 'Creates a User resource.'
+      operationId: api_adminusers_id_post
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User identifier'
+          required: true
+          deprecated: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+      requestBody:
+        description: 'The new User resource'
+        required: true
+        content:
+          application/ld+json:
+            schema:
+              $ref: '#/components/schemas/User'
+      responses:
+        '201':
+          description: 'User resource created'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/User.jsonld'
+        '400':
+          description: 'Invalid input'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
+        '422':
+          description: 'An error occurred'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/ConstraintViolation'
+    delete:
+      tags:
+        - User
+      summary: 'Removes the User resource.'
+      description: 'Removes the User resource.'
+      operationId: api_adminusers_id_delete
+      parameters:
+        -
+          name: id
+          in: path
+          description: 'User identifier'
+          required: true
+          deprecated: false
+          style: simple
+          explode: false
+          schema:
+            type: string
+      responses:
+        '204':
+          description: 'User resource deleted'
+        '404':
+          description: 'Not found'
+          content:
+            application/ld+json:
+              schema:
+                $ref: '#/components/schemas/Error.jsonld'
+            application/problem+json:
+              schema:
+                $ref: '#/components/schemas/Error'
+            application/json:
+              schema:
+                $ref: '#/components/schemas/Error'
   '/_error/{code}':
     get:
       operationId: get__preview_error
@@ -701,35 +922,6 @@ paths:
       responses:
         default:
           description: ''
-  /api/user/:
-    get:
-      tags:
-        - User
-      summary: 'Get current user information'
-      description: "Returns the authenticated user's details including ID, username, and roles"
-      operationId: get_app_user
-      responses:
-        '200':
-          description: 'Successfully retrieved user information'
-          content:
-            application/json:
-              schema:
-                properties:
-                  id: { type: integer, example: 1 }
-                  username: { type: string, example: admin }
-                  roles: { type: array, items: { type: string, enum: [ROLE_ADMIN, ROLE_USER] }, example: [ROLE_USER] }
-                type: object
-        '401':
-          description: 'Unauthorized - User not authenticated'
-          content:
-            application/json:
-              schema:
-                properties:
-                  message: { type: string, example: 'Authentication required' }
-                type: object
-      security:
-        -
-          Bearer: []
 components:
   schemas:
     ConstraintViolation:
@@ -1035,7 +1227,9 @@ components:
         public:
           type: boolean
         user_id:
-          $ref: '#/components/schemas/User'
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
         links:
           type: array
           items:
@@ -1043,11 +1237,10 @@ components:
             format: iri-reference
             example: 'https://example.com/'
         userId:
-          anyOf:
-            -
-              $ref: '#/components/schemas/User'
-            -
-              type: 'null'
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
+          nullable: true
       type: object
     LinkCollection.jsonMergePatch:
       properties:
@@ -1059,7 +1252,9 @@ components:
         public:
           type: boolean
         user_id:
-          $ref: '#/components/schemas/User'
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
         links:
           type: array
           items:
@@ -1067,14 +1262,12 @@ components:
             format: iri-reference
             example: 'https://example.com/'
         userId:
-          anyOf:
-            -
-              $ref: '#/components/schemas/User'
-            -
-              type: 'null'
+          type: string
+          format: iri-reference
+          example: 'https://example.com/'
+          nullable: true
       type: object
     LinkCollection.jsonld:
-      type: object
       allOf:
         -
           $ref: '#/components/schemas/HydraItemBaseSchema'
@@ -1088,7 +1281,9 @@ components:
             public:
               type: boolean
             user_id:
-              $ref: '#/components/schemas/User.jsonld'
+              type: string
+              format: iri-reference
+              example: 'https://example.com/'
             links:
               type: array
               items:
@@ -1096,11 +1291,10 @@ components:
                 format: iri-reference
                 example: 'https://example.com/'
             userId:
-              anyOf:
-                -
-                  $ref: '#/components/schemas/User.jsonld'
-                -
-                  type: 'null'
+              type: string
+              format: iri-reference
+              example: 'https://example.com/'
+              nullable: true
           type: object
     User:
       properties:
@@ -1120,36 +1314,44 @@ components:
         linkCollections:
           type: array
           items:
-            $ref: '#/components/schemas/LinkCollection'
+            type: string
+            format: iri-reference
+            example: 'https://example.com/'
         userIdentifier:
           description: 'A visual identifier that represents this user.'
           type: string
           readOnly: true
       type: object
     User.jsonld:
-      properties:
-        id:
-          type: integer
-          readOnly: true
-        username:
-          type: string
-        roles:
-          description: 'The user roles'
-          type: array
-          items:
-            type: string
-        password:
-          description: 'The hashed password'
-          type: string
-        linkCollections:
-          type: array
-          items:
-            $ref: '#/components/schemas/LinkCollection.jsonld'
-        userIdentifier:
-          description: 'A visual identifier that represents this user.'
-          type: string
-          readOnly: true
-      type: object
+      allOf:
+        -
+          $ref: '#/components/schemas/HydraItemBaseSchema'
+        -
+          properties:
+            id:
+              type: integer
+              readOnly: true
+            username:
+              type: string
+            roles:
+              description: 'The user roles'
+              type: array
+              items:
+                type: string
+            password:
+              description: 'The hashed password'
+              type: string
+            linkCollections:
+              type: array
+              items:
+                type: string
+                format: iri-reference
+                example: 'https://example.com/'
+            userIdentifier:
+              description: 'A visual identifier that represents this user.'
+              type: string
+              readOnly: true
+          type: object
   securitySchemes:
     JWT:
       type: http
@@ -1165,6 +1367,7 @@ tags:
     description: "Resource 'LinkCollection' operations."
   -
     name: User
+    description: "Resource 'User' operations."
   -
     name: 'Login Check'
     description: 'Login Check'

@@ -18,6 +18,11 @@ generate OpenApi scheme
 php bin/console api:openapi:export -y
 ```
 
+export OpenApi scheme
+```
+php bin/console nelmio:apidoc:dump --format=yaml --server-url=http://localhost:8000/api > schema.yaml
+```
+
 import OpenApi scheme
 ```
 npm run openapi
