@@ -41,6 +41,7 @@ export default function UpdatePassword() {
         });
     }
 
+    if(isPending) return <LoadingLabel/>
 
     return (
         <form onSubmit={handleSubmit}>

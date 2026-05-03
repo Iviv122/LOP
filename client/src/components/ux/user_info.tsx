@@ -1,4 +1,5 @@
 import { apiClient } from "../../lib/api/client"
+import LoadingLabel from "../ui/loading_label"
 
 export default function UserInfo() {
 
@@ -6,6 +7,10 @@ export default function UserInfo() {
         staleTime: Infinity,
     })
 
+
+    if(isPending) return <LoadingLabel/>
+
+    if(error) return <p>{error.message}</p>
 
     return (
         <>

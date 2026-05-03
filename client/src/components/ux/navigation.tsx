@@ -3,6 +3,7 @@ import { RemoveAuthToken } from '../../atoms/token'
 import { useEffect } from 'react';
 import { apiClient } from '../../lib/api/client';
 import { IsAdmin, SetAdmin } from '../../atoms/isadmin';
+import LoadingLabel from '../ui/loading_label';
 
 export default function Navigation() {
 
@@ -24,6 +25,8 @@ export default function Navigation() {
     useEffect(() => {
         mutate({});
     }, [])
+
+    if(isPending) return <LoadingLabel/>
 
     return (
         <nav style={{ display: 'flex', gap: '1rem' }}>
