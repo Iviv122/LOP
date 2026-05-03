@@ -1,5 +1,6 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { apiClient } from '../../lib/api/client'
+import LoadingLabel from '../../components/ui/loading_label';
 
 export const Route = createFileRoute('/_auth/users')({
   component: RouteComponent,
@@ -15,7 +16,7 @@ function RouteComponent() {
     }
   );
 
-  if (isPending) return <p>Loading...</p>
+  if (isPending) return <LoadingLabel/> 
   if (error) return <p>Error loading users</p>
 
   return (

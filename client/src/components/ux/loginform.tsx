@@ -2,6 +2,7 @@ import { useState } from "react"
 import { apiClient } from "../../lib/api/client"
 import { SetAuthToken } from "../../atoms/token";
 import { useNavigate, useSearch } from "@tanstack/react-router";
+import LoadingLabel from "../ui/loading_label";
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
@@ -12,13 +13,13 @@ export default function LoginForm() {
 
 
     const { mutate, error, isPending, isError } = apiClient.useMutation(
-        "post", 
+        "post",
         "/api/login_check",
         {
             onSuccess(data) {
-                if(data.token){
+                if (data.token) {
                     SetAuthToken(data.token);
-                    navigate({to: search.redirect});
+                    navigate({ to: search.redirect });
                 }
             },
         }
@@ -26,7 +27,7 @@ export default function LoginForm() {
 
     function handleSubmit(e?: React.FormEvent) {
         e?.preventDefault();
-        
+
         if (!username || !password) {
             alert('Please fill in all fields');
             return;
@@ -43,7 +44,7 @@ export default function LoginForm() {
     return (
         <form onSubmit={handleSubmit}>
             {isPending ? (
-                <p>Loading...</p>
+                <LoadingLabel/>
             ) : (
                 <>
                     {isError && (
@@ -51,17 +52,17 @@ export default function LoginForm() {
                             {error || 'Login failed. Please try again.'}
                         </div>
                     )}
-                    
-                    <input 
-                        type="text" 
+
+                    <input
+                        type="text"
                         placeholder="Username"
                         value={username}
                         onChange={(e) => setUsername(e.target.value)}
                         disabled={isPending}
                         required
                     />
-                    <input 
-                        type="password" 
+                    <input
+                        type="password"
                         placeholder="Password"
                         value={password}
                         onChange={(e) => setPassword(e.target.value)}

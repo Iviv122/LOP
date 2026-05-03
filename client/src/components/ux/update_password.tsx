@@ -1,5 +1,6 @@
 import { useState } from "react";
 import { apiClient } from "../../lib/api/client"
+import LoadingLabel from "../ui/loading_label";
 
 export default function UpdatePassword() {
 
@@ -44,7 +45,7 @@ export default function UpdatePassword() {
     return (
         <form onSubmit={handleSubmit}>
             {isPending ? (
-                <p>Loading...</p>
+                <LoadingLabel/>
             ) : (
                 <>
                     {isError && (
