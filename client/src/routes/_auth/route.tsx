@@ -1,6 +1,6 @@
 import { createFileRoute, Outlet, redirect } from '@tanstack/react-router'
 import { GetAuthToken, RemoveAuthToken } from '../../atoms/token'
-import Navigation from '../../components/navigation';
+import Navigation from '../../components/ux/navigation';
 
 
 export const Route = createFileRoute('/_auth')({

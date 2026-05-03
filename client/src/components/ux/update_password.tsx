@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { apiClient } from "../lib/api/client"
+import { apiClient } from "../../lib/api/client"
 
 export default function UpdatePassword() {
 
@@ -12,11 +12,11 @@ export default function UpdatePassword() {
         "/api/user/new_password",
         {
             onSuccess(){
-                alert("succes!")
+                //add toast
             },
-            onError(error, variables, onMutateResult, context) {
-                alert(error.error)
-            },
+            onError(){
+                // add toast
+            }
         }
     );
 
@@ -27,8 +27,9 @@ export default function UpdatePassword() {
             alert('Please fill in all fields');
             return;
         }
-        if(!newPassword || !repeatNewPassword){
+        if(newPassword !== repeatNewPassword){
             alert("passwords doesn't match")
+            return;
         }
 
         mutate({
@@ -48,12 +49,12 @@ export default function UpdatePassword() {
                 <>
                     {isError && (
                         <div style={{ color: 'red', marginBottom: '10px' }}>
-                            {error?.message || 'Login failed. Please try again.'}
+                            {error?.error || 'Login failed. Please try again.'}
                         </div>
                     )}
 
                     <input
-                        type="text"
+                        type="password"
                         placeholder="Current password"
                         value={oldPassword}
                         onChange={(e) => setOldPassword(e.target.value)}

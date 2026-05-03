@@ -1,8 +1,8 @@
 import { Link } from '@tanstack/react-router'
-import { RemoveAuthToken } from '../atoms/token'
+import { RemoveAuthToken } from '../../atoms/token'
 import { useEffect } from 'react';
-import { apiClient } from '../lib/api/client';
-import { IsAdmin, SetAdmin } from '../atoms/isadmin';
+import { apiClient } from '../../lib/api/client';
+import { IsAdmin, SetAdmin } from '../../atoms/isadmin';
 
 export default function Navigation() {
 

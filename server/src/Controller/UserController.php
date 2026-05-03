@@ -79,6 +79,9 @@ final class UserController extends AbstractController
     )]
     public function index(): Response
     {
+        /**
+         * @var User
+         */
         $user = $this->getUser();
 
         return $this->json([

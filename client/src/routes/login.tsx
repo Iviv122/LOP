@@ -1,5 +1,5 @@
 import { createFileRoute, redirect } from '@tanstack/react-router'
-import LoginForm from '../components/loginform'
+import LoginForm from '../components/ux/loginform'
 import { z } from 'zod'
 import { GetAuthToken } from '../atoms/token';
 

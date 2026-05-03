@@ -1,22 +1,19 @@
 import { createFileRoute } from '@tanstack/react-router'
 import { apiClient } from '../../lib/api/client'
-import { useEffect } from 'react'
 
 export const Route = createFileRoute('/_auth/users')({
   component: RouteComponent,
 })
 
 function RouteComponent() {
-  const { mutate, data, error, isPending } =
-    apiClient.useMutation("get", "/api/admin/users")
-
-  useEffect(() => {
-    const fetchUsers = async () => {
-      await mutate({})
+  const { data, error, isPending } = apiClient.useQuery(
+    "get",
+    "/api/admin/users",
+    {},
+    {
+      staleTime: Infinity,
     }
-
-    fetchUsers()
-  }, [mutate])
+  );
 
   if (isPending) return <p>Loading...</p>
   if (error) return <p>Error loading users</p>

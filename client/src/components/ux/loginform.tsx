@@ -1,6 +1,6 @@
 import { useState } from "react"
-import { apiClient } from "../lib/api/client"
-import { SetAuthToken } from "../atoms/token";
+import { apiClient } from "../../lib/api/client"
+import { SetAuthToken } from "../../atoms/token";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 
 export default function LoginForm() {
@@ -48,7 +48,7 @@ export default function LoginForm() {
                 <>
                     {isError && (
                         <div style={{ color: 'red', marginBottom: '10px' }}>
-                            {error?.message || 'Login failed. Please try again.'}
+                            {error || 'Login failed. Please try again.'}
                         </div>
                     )}
                     
