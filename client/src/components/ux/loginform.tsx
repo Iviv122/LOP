@@ -3,6 +3,16 @@ import { apiClient } from "../../lib/api/client"
 import { SetAuthToken } from "../../atoms/token";
 import { useNavigate, useSearch } from "@tanstack/react-router";
 import LoadingLabel from "../ui/loading_label";
+import {
+    Paper,
+    TextField,
+    Button,
+    Typography,
+    Box,
+    Stack,
+    CircularProgress,
+} from "@mui/material";
+
 
 export default function LoginForm() {
     const [username, setUsername] = useState("");
@@ -12,7 +22,7 @@ export default function LoginForm() {
     const search = useSearch({ from: '/login' });
 
 
-    const { mutate, error, isPending, isError } = apiClient.useMutation(
+    const { mutate, isPending, isError } = apiClient.useMutation(
         "post",
         "/api/login_check",
         {
@@ -41,39 +51,72 @@ export default function LoginForm() {
         });
     }
 
-    return (
-        <form onSubmit={handleSubmit}>
-            {isPending ? (
-                <LoadingLabel/>
-            ) : (
-                <>
-                    {isError && (
-                        <div style={{ color: 'red', marginBottom: '10px' }}>
-                            {error || 'Login failed. Please try again.'}
-                        </div>
-                    )}
+    if (isPending) return <LoadingLabel />
 
-                    <input
-                        type="text"
-                        placeholder="Username"
-                        value={username}
-                        onChange={(e) => setUsername(e.target.value)}
-                        disabled={isPending}
-                        required
-                    />
-                    <input
-                        type="password"
-                        placeholder="Password"
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        disabled={isPending}
-                        required
-                    />
-                    <button type="submit" disabled={isPending}>
-                        {isPending ? 'Logging in...' : 'Submit'}
-                    </button>
-                </>
-            )}
-        </form>
+    return (
+        <Box
+            sx={{
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                minHeight: "100vh",
+                bgcolor: "grey.100",
+            }}
+        >
+            <Paper elevation={3} sx={{ p: 4, width: 360 }}>
+                <form onSubmit={handleSubmit}>
+                    <Stack spacing={3}>
+                        <Typography
+                            sx={{
+                                textAlign: "center"
+                            }}
+                            variant="h5">
+                            Login
+                        </Typography>
+
+                        <TextField
+                            label="Username"
+                            variant="outlined"
+                            fullWidth
+                            value={username}
+                            onChange={(e) => setUsername(e.target.value)}
+                            disabled={isPending}
+                            required
+                        />
+
+                        <TextField
+                            label="Password"
+                            type="password"
+                            variant="outlined"
+                            fullWidth
+                            value={password}
+                            onChange={(e) => setPassword(e.target.value)}
+                            disabled={isPending}
+                            required
+                        />
+
+                        {isError && (
+                            <Typography color="error" variant="body2">
+                                Login failed. Please try again.
+                            </Typography>
+                        )}
+
+                        <Button
+                            type="submit"
+                            variant="contained"
+                            size="large"
+                            fullWidth
+                            disabled={isPending}
+                        >
+                            {isPending ? (
+                                <CircularProgress size={24} color="inherit" />
+                            ) : (
+                                "Login"
+                            )}
+                        </Button>
+                    </Stack>
+                </form>
+            </Paper>
+        </Box>
     );
 }
