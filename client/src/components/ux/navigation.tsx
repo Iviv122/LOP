@@ -8,7 +8,6 @@ import AppBar from '@mui/material/AppBar';
 import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
 import Menu from '@mui/material/Menu';
 import Container from '@mui/material/Container';
 import MenuItem from '@mui/material/MenuItem';
@@ -118,7 +117,7 @@ export default function Navigation() {
                         </Menu>
                     </Box>
                     <Box sx={{ flexGrow: 1, display: { xs: 'none', md: 'flex' } }}>
-                        {pages.map((page, i) => (
+                        {pages.filter(page => (page.isAdmin && IsAdmin()) || !page.isAdmin).map((page, i) => (
                             <Button
                                 key={i}
                                 component={Link}
@@ -130,6 +129,14 @@ export default function Navigation() {
                             </Button>
                         ))}
                     </Box>
+                    <Button
+                        component={Link}
+                        to="/login"
+                        onClick={logOut}
+                        sx={{ my: 2, color: 'white', display: 'block' }}
+                    >
+                        LogOut
+                    </Button>
                 </Toolbar>
             </Container>
         </AppBar>
