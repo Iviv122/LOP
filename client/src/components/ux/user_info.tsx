@@ -15,7 +15,7 @@ export default function UserInfo() {
     return (
         <>
             <h2>About Me</h2>
-            <>user id: {data?.id} username: {data?.username}</>
+            <p>user id: {data?.id} username: {data?.username}</p>
             <p>roles</p>
             {data?.roles?.map((e,i) => <p key={i}>{e}</p>)}
         </>
